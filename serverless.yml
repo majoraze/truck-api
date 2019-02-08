@@ -1,0 +1,70 @@
+service: ${self:custom.environment.application.name}
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'us-east-1'}
+  stackName: ${self:custom.environment.application.stack}
+  apiName: ${self:custom.environment..application.name}
+  memorySize: 512
+  timeout: 10
+  versionFunctions: false
+  environment: ${file(config/.env.app.yml):${opt:stage, 'local'}}
+
+package:
+  exclude:
+    - .git/**
+    - .serverless/**
+    - .editorconfig
+    - .eslintrc
+    - .gitignore
+    - package-lock.json
+    - package.json
+    - __tests__/**
+    - config/**
+    - fixtures/**
+    - docker-compose.yml
+    - Dockerfile
+    - README.md
+    - coverage/**
+    - .dockerignore
+
+plugins:
+  - serverless-offline
+
+custom:
+  environment: ${file(config/.env.app.yml)}
+
+functions:
+  find:
+    handler: services/drivers/find.handler
+    events:
+      - http:
+          path: drivers
+          method: get
+          cors: true
+
+  getItinerariesByTruckType:
+    handler: services/itineraries/find-by-truck-type.handler
+    events:
+      - http:
+          path: itineraries/{truckType}
+          method: get
+          cors: true
+         
+  create:
+    handler: services/drivers/create.handler
+    events:
+      - http:
+          path: drivers
+          method: post
+          cors: true
+
+  update:
+    handler: services/drivers/update.handler
+    events:
+      - http:
+          path: drivers/{id}
+          method: put
+          cors: true

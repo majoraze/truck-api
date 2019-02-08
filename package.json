@@ -1,0 +1,54 @@
+{
+  "name": "truck-driver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "moment": "2.24.0",
+    "mongoose": "^5.4.7",
+    "mongoose-paginate": "^5.0.3",
+    "serverless-offline": "^4.2.0",
+    "validator": "10.11.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.12.1",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.15.0",
+    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "faker": "^4.1.0",
+    "jest": "^24.0.0",
+    "mockingoose": "^2.12.0",
+    "yenv": "^2.1.0"
+  },
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint --format compact services/**/*.js  utils/**/*.js",
+    "start": "serverless offline start --skipCacheInvalidation --host=0.0.0.0",
+    "start:fixture": "node ./fixtures/index.js clear && node ./fixtures/index.js create && serverless offline start --skipCacheInvalidation --host=0.0.0.0",
+    "test:coverage": "jest --coverage",
+    "fixture:driver": "node ./fixtures/driver.js"
+  },
+  "jest": {
+    "verbose": true,
+    "collectCoverageFrom": [
+      "services/**/*.js",
+      "utils/**/*.js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "testEnvironment": "node",
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    }
+  },
+  "author": "",
+  "license": "ISC"
+}
